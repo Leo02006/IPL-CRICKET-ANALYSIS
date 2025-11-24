@@ -46,7 +46,7 @@ def set_background_image(image_file_path):
         st.warning(f"Could not load background image '{image_file_path}': {e}")
         return
 
-    st.markdown(
+   st.markdown(
     f"""
     <style>
 
@@ -77,9 +77,9 @@ def set_background_image(image_file_path):
         border-radius: 10px;
     }}
 
-    /* 🔥 NEW: Sidebar with 50% opacity black */
+    /* 🔥 NEW: Sidebar with 30% opacity black */
     [data-testid="stSidebar"] > div:first-child {{
-        background-color: rgba(0, 0, 0, 0.5) !important;
+        background-color: rgba(0, 0, 0, 0.3) !important;
         border-right: none !important;
     }}
 
@@ -98,6 +98,7 @@ def set_background_image(image_file_path):
     """,
     unsafe_allow_html=True,
 )
+
 
 
 set_background_image(_bg_path_to_use)
@@ -354,5 +355,6 @@ if page == "Data Cleaning":
 # -----------------------
 st.markdown("---")
 st.markdown("Notes: This app uses only pre-match features...")
+
 
 
