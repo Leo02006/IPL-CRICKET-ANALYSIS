@@ -47,61 +47,57 @@ def set_background_image(image_file_path):
         return
 
     st.markdown(
-        f"""
-        <style>
+    f"""
+    <style>
 
-        /* KEEP HEADER VISIBLE — FIXES NAVIGATION HIDING ISSUE */
-        footer {{
-            visibility: hidden;
-            height: 0px;
-            margin: 0px;
-            padding: 0px;
-        }}
+    footer {{
+        visibility: hidden;
+        height: 0px;
+        margin: 0px;
+        padding: 0px;
+    }}
 
-        /* Main page padding */
-        .block-container {{
-            padding-top: 1rem;
-            padding-bottom: 2rem;
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }}
+    .block-container {{
+        padding-top: 1rem;
+        padding-bottom: 2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }}
 
-        /* Background */
-        .stApp {{
-            background-image: url("data:{mime};base64,{data}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: center;
-        }}
+    .stApp {{
+        background-image: url("data:{mime};base64,{data}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+    }}
 
-        /* White glass layer */
-        .stApp > [data-testid="block-container"] {{
-            background-color: rgba(255, 255, 255, 0.88);
-            border-radius: 10px;
-        }}
+    .stApp > [data-testid="block-container"] {{
+        background-color: rgba(255, 255, 255, 0.88);
+        border-radius: 10px;
+    }}
 
-        /* Sidebar transparent */
-        [data-testid="stSidebar"] > div:first-child {{
-            background-color: transparent !important;
-            border-right: none;
-        }}
+    /* 🔥 NEW: Sidebar with 50% opacity black */
+    [data-testid="stSidebar"] > div:first-child {{
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        border-right: none !important;
+    }}
 
-        /* Title animation */
-        @keyframes glow {{
-            0% {{ color: #2196F3; text-shadow: 0 0 5px rgba(33,150,243,0.5); }}
-            50% {{ color: #FFC107; text-shadow: 0 0 10px #FFC107, 0 0 20px #FF9800; }}
-            100% {{ color: #2196F3; text-shadow: 0 0 5px rgba(33,150,243,0.5); }}
-        }}
-        h1 {{
-            animation: glow 3s infinite alternate;
-            text-align: center;
-            font-weight: 800;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    @keyframes glow {{
+        0% {{ color: #2196F3; text-shadow: 0 0 5px rgba(33,150,243,0.5); }}
+        50% {{ color: #FFC107; text-shadow: 0 0 10px #FFC107, 0 0 20px #FF9800; }}
+        100% {{ color: #2196F3; text-shadow: 0 0 5px rgba(33,150,243,0.5); }}
+    }}
+
+    h1 {{
+        animation: glow 3s infinite alternate;
+        text-align: center;
+        font-weight: 800;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 set_background_image(_bg_path_to_use)
@@ -358,4 +354,5 @@ if page == "Data Cleaning":
 # -----------------------
 st.markdown("---")
 st.markdown("Notes: This app uses only pre-match features...")
+
 
