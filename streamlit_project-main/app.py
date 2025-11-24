@@ -95,9 +95,9 @@ if os.path.isfile(IMAGE_PATH):
         <style>
         .top-right-image {{
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 130px;
+            top: 40px;
+            right: 40px;
+            width: 160px;
             z-index: 9999;
         }}
         </style>
@@ -236,4 +236,5 @@ if page == "Upload / Sample":
 # -----------------------
 # (Rest of your original code continues unchanged…)
 # -----------------------
+
 
