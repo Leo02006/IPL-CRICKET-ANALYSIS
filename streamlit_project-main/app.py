@@ -45,59 +45,59 @@ def set_background_image(image_file_path):
     except Exception as e:
         st.warning(f"Could not load background image '{image_file_path}': {e}")
         return
-st.markdown(
-    f"""
-    <style>
 
-    footer {{
-        visibility: hidden;
-        height: 0px;
-        margin: 0px;
-        padding: 0px;
-    }}
+    st.markdown(
+        f"""
+        <style>
 
-    .block-container {{
-        padding-top: 1rem;
-        padding-bottom: 2rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }}
+        footer {{
+            visibility: hidden;
+            height: 0px;
+            margin: 0px;
+            padding: 0px;
+        }}
 
-    .stApp {{
-        background-image: url("data:{mime};base64,{data}");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: center;
-    }}
+        .block-container {{
+            padding-top: 1rem;
+            padding-bottom: 2rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }}
 
-    .stApp > [data-testid="block-container"] {{
-        background-color: rgba(255, 255, 255, 0.88);
-        border-radius: 10px;
-    }}
+        .stApp {{
+            background-image: url("data:{mime};base64,{data}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }}
 
-    /* 🔥 NEW: Sidebar with 30% opacity black */
-    [data-testid="stSidebar"] > div:first-child {{
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-right: none !important;
-    }}
+        .stApp > [data-testid="block-container"] {{
+            background-color: rgba(255, 255, 255, 0.88);
+            border-radius: 10px;
+        }}
 
-    @keyframes glow {{
-        0% {{ color: #2196F3; text-shadow: 0 0 5px rgba(33,150,243,0.5); }}
-        50% {{ color: #FFC107; text-shadow: 0 0 10px #FFC107, 0 0 20px #FF9800; }}
-        100% {{ color: #2196F3; text-shadow: 0 0 5px rgba(33,150,243,0.5); }}
-    }}
+        /* 🔥 Sidebar with 30% transparency black */
+        [data-testid="stSidebar"] > div:first-child {{
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            border-right: none !important;
+        }}
 
-    h1 {{
-        animation: glow 3s infinite alternate;
-        text-align: center;
-        font-weight: 800;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+        @keyframes glow {{
+            0% {{ color: #2196F3; text-shadow: 0 0 5px rgba(33,150,243,0.5); }}
+            50% {{ color: #FFC107; text-shadow: 0 0 10px #FFC107, 0 0 20px #FF9800; }}
+            100% {{ color: #2196F3; text-shadow: 0 0 5px rgba(33,150,243,0.5); }}
+        }}
 
+        h1 {{
+            animation: glow 3s infinite alternate;
+            text-align: center;
+            font-weight: 800;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 set_background_image(_bg_path_to_use)
@@ -156,8 +156,10 @@ if os.path.isfile(RAJAGIRI_IMAGE_PATH):
     )
 else:
     st.warning(f"Rajagiri image not found at: {RAJAGIRI_IMAGE_PATH}")
+
+
 # -----------------------
-# Rest of your app
+# Main Title
 # -----------------------
 st.title("IPL Cricket Analysis — Capstone Project (Streamlit + ML)")
 st.markdown(
@@ -165,14 +167,14 @@ st.markdown(
 This app demonstrates an end-to-end pipeline for IPL match analysis:
 - Upload dataset (or use sample)
 - Data cleaning & preprocessing
-- EDA & visualizations (pie, heatmap, bar, line) with automatic inferences
-- Train a ML model to predict match winner (target locked to 'winner')
-- Predict a single match (minimal inputs)
+- EDA & visualizations
+- Train ML model to predict match winner
+- Predict results
 """
 )
 
 # -----------------------
-# Utilities
+# Utility Functions
 # -----------------------
 @st.cache_data
 def load_sample_data():
@@ -270,16 +272,8 @@ def build_preprocessing_pipeline(X):
     return ColumnTransformer(transformers=transformers, remainder="drop")
 
 
-def numeric_columns(df):
-    return df.select_dtypes(include=[np.number]).columns.tolist()
-
-
-def categorical_columns(df):
-    return df.select_dtypes(include=["object", "category"]).columns.tolist()
-
-
 # -----------------------
-# Sidebar navigation (NOW WORKS—HEADER NOT HIDDEN)
+# Sidebar Navigation
 # -----------------------
 page = st.sidebar.selectbox(
     "Navigation",
@@ -287,7 +281,7 @@ page = st.sidebar.selectbox(
 )
 
 # -----------------------
-# Upload / Sample Page
+# Upload Page
 # -----------------------
 if page == "Upload / Sample":
     st.header("Upload dataset or use sample")
@@ -311,7 +305,7 @@ if page == "Upload / Sample":
         st.dataframe(st.session_state["df"].head(10))
 
 # -----------------------
-# Data Cleaning
+# Data Cleaning Page
 # -----------------------
 if page == "Data Cleaning":
     st.header("Data Cleaning & Preprocessing")
@@ -333,28 +327,13 @@ if page == "Data Cleaning":
             st.dataframe(cleaned.head())
 
 # -----------------------
-# EDA (same as your code)
+# EDA (same as your existing)
 # -----------------------
-# (Your EDA section continues normally — unchanged)
-# Due to message-size limits, I’m not repeating this part.
-# It stays EXACTLY as you wrote it.
-
-# -----------------------
-# Model Training (unchanged)
-# -----------------------
-# stays exactly the same
-
-# -----------------------
-# Predict Section (unchanged)
-# -----------------------
-# stays exactly the same
+# Keep your EDA and other pages exactly as before
 
 # -----------------------
 # Footer
 # -----------------------
 st.markdown("---")
 st.markdown("Notes: This app uses only pre-match features...")
-
-
-
 
