@@ -45,8 +45,7 @@ def set_background_image(image_file_path):
     except Exception as e:
         st.warning(f"Could not load background image '{image_file_path}': {e}")
         return
-
-   st.markdown(
+st.markdown(
     f"""
     <style>
 
@@ -355,6 +354,7 @@ if page == "Data Cleaning":
 # -----------------------
 st.markdown("---")
 st.markdown("Notes: This app uses only pre-match features...")
+
 
 
 
