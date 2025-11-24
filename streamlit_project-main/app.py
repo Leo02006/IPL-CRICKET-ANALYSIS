@@ -12,7 +12,6 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 
-
 # ---------------------------------
 # Page Setup
 # ---------------------------------
@@ -20,53 +19,47 @@ st.set_page_config(page_title="IPL Analysis Capstone", layout="wide")
 
 
 # ---------------------------------
-# Paths for Images (all inside assets)
+# Image Paths (ALL inside assets folder)
 # ---------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+ASSETS = os.path.join(BASE_DIR, "assets")
 
-BACKGROUND_IMAGE_PATH = os.path.join(ASSETS_DIR, "cricket2.jpeg")
-GRANT_LOGO_PATH = os.path.join(ASSETS_DIR, "Grant.png")
-RAJAGIRI_LOGO_PATH = os.path.join(ASSETS_DIR, "Rajagiri.png")
+BACKGROUND = os.path.join(ASSETS, "cricket2.jpeg")
+GRANT = os.path.join(ASSETS, "Grant.png")
+RAJAGIRI = os.path.join(ASSETS, "Rajagiri.png")
 
 
 # ---------------------------------
 # Background + CSS
 # ---------------------------------
-def set_background_image(image_path):
-    if not os.path.isfile(image_path):
-        st.warning(f"Background image not found: {image_path}")
-        return
-
-    with open(image_path, "rb") as f:
+def set_bg(image):
+    with open(image, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
-
-    ext = image_path.split(".")[-1]
+    ext = image.split(".")[-1]
     mime = f"image/{ext}"
 
     st.markdown(
         f"""
         <style>
 
-        /* FULL PAGE BACKGROUND */
+        /* FULL BACKGROUND */
         .stApp {{
             background-image: url("data:{mime};base64,{encoded}");
             background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            background-position: center;
         }}
 
-        /* GLASS EFFECT on MAIN CONTAINER */
+        /* REMOVE WHITE GLASS COMPLETELY */
         .block-container {{
-            background-color: rgba(255,255,255,0.88);
+            background-color: transparent !important;
             padding: 2rem;
-            border-radius: 12px;
         }}
 
-        /* SIDEBAR – 30% TRANSPARENT BLACK */
+        /* SIDEBAR - 30% BLACK */
         [data-testid="stSidebar"] > div:first-child {{
-            background-color: rgba(0, 0, 0, 0.3) !important;
+            background: rgba(0,0,0,0.3) !important;
             border-right: none !important;
         }}
 
@@ -75,45 +68,43 @@ def set_background_image(image_path):
             color: white !important;
         }}
 
-        /* REMOVE BLACK TOP HEADER */
+        /* TRANSPARENT TOP HEADER */
         header[data-testid="stHeader"] {{
-            background: rgba(0,0,0,0) !important;
+            background: transparent !important;
         }}
 
-        /* REMOVE HEADER SHADOW */
         header[data-testid="stHeader"]::before {{
             box-shadow: none !important;
         }}
 
-        /* LOGOS ABOVE EVERYTHING */
-        .top-left-image, .top-right-image {{
-            z-index: 99999 !important;
+        /* FIXED LOGOS */
+        .top-left {{
             position: fixed;
-            width: 120px;
-            pointer-events: none;
-        }}
-
-        .top-left-image {{
             top: 15px;
             left: 15px;
+            width: 120px;
+            z-index: 9999;
         }}
 
-        .top-right-image {{
+        .top-right {{
+            position: fixed;
             top: 15px;
             right: 15px;
+            width: 120px;
+            z-index: 9999;
         }}
 
         /* TITLE ANIMATION */
         @keyframes glow {{
-            0% {{ color: #2196F3; text-shadow: 0 0 6px rgba(33,150,243,0.6); }}
-            50% {{ color: #FFC107; text-shadow: 0 0 15px #FFC107; }}
-            100% {{ color: #2196F3; text-shadow: 0 0 6px rgba(33,150,243,0.6); }}
+            0% {{ color:#2196F3; text-shadow:0 0 10px #2196F3; }}
+            50% {{ color:#FFC107; text-shadow:0 0 25px #FFC107; }}
+            100% {{ color:#2196F3; text-shadow:0 0 10px #2196F3; }}
         }}
 
         h1 {{
             animation: glow 3s infinite alternate;
             font-weight: 800;
-            text-align: center;
+            text-align:center;
         }}
 
         </style>
@@ -122,43 +113,38 @@ def set_background_image(image_path):
     )
 
 
-# Apply background
-set_background_image(BACKGROUND_IMAGE_PATH)
+set_bg(BACKGROUND)
 
 
 # ---------------------------------
-# Logos Top-Left & Top-Right
+# Place Logos
 # ---------------------------------
-def place_logo(image_path, css_class):
-    if os.path.isfile(image_path):
-        with open(image_path, "rb") as f:
+def place_logo(path, css_class):
+    if os.path.isfile(path):
+        with open(path, "rb") as f:
             encoded = base64.b64encode(f.read()).decode()
         st.markdown(
-            f"""
-            <img src="data:image/png;base64,{encoded}" class="{css_class}">
-            """,
-            unsafe_allow_html=True,
+            f'<img src="data:image/png;base64,{encoded}" class="{css_class}">',
+            unsafe_allow_html=True
         )
-    else:
-        st.warning(f"Logo not found: {image_path}")
 
 
-place_logo(GRANT_LOGO_PATH, "top-left-image")
-place_logo(RAJAGIRI_LOGO_PATH, "top-right-image")
+place_logo(GRANT, "top-left")
+place_logo(RAJAGIRI, "top-right")
 
 
 # ---------------------------------
-# TITLE & INTRO
+# Title + Description
 # ---------------------------------
 st.title("IPL Cricket Analysis — Capstone Project (Streamlit + ML)")
 
 st.markdown("""
 This app demonstrates an end-to-end IPL match analysis pipeline:
 
-- Upload dataset / use sample  
+- Upload dataset / Use sample  
 - Data cleaning & preprocessing  
-- EDA & visualization  
-- Machine Learning — Predict match winner  
+- EDA & Visualization  
+- ML Model — Predict match winner  
 - Final prediction form  
 """)
 
@@ -167,7 +153,7 @@ This app demonstrates an end-to-end IPL match analysis pipeline:
 # Utility Functions
 # ---------------------------------
 @st.cache_data
-def load_sample_data():
+def load_sample():
     return pd.DataFrame({
         "season": [2017, 2017, 2018, 2018],
         "team1": ["MI", "CSK", "KKR", "RCB"],
@@ -180,7 +166,7 @@ def load_sample_data():
     })
 
 
-def basic_cleaning(df):
+def clean(df):
     df = df.copy()
     df.dropna(how="all", axis=1, inplace=True)
     df.drop_duplicates(inplace=True)
@@ -189,7 +175,7 @@ def basic_cleaning(df):
 
 
 # ---------------------------------
-# SIDEBAR NAVIGATION
+# Sidebar Navigation
 # ---------------------------------
 page = st.sidebar.selectbox(
     "Navigation",
@@ -198,49 +184,44 @@ page = st.sidebar.selectbox(
 
 
 # ---------------------------------
-# PAGES
+# Pages
 # ---------------------------------
 if page == "Upload / Sample":
     st.header("Upload dataset or use sample")
-    file = st.file_uploader("Upload IPL CSV file", type=["csv"])
+    file = st.file_uploader("Upload IPL CSV", type=["csv"])
 
     if file:
-        st.session_state["df"] = pd.read_csv(file)
-        st.success("Dataset uploaded!")
+        st.session_state.df = pd.read_csv(file)
+        st.success("File uploaded!")
 
-    if st.button("Load sample dataset"):
-        st.session_state["df"] = load_sample_data()
-        st.success("Sample dataset loaded.")
+    if st.button("Load Sample"):
+        st.session_state.df = load_sample()
+        st.success("Sample loaded.")
 
     if "df" in st.session_state:
         st.subheader("Preview")
-        st.dataframe(st.session_state["df"])
+        st.dataframe(st.session_state.df)
 
 
 elif page == "Data Cleaning":
     st.header("Data Cleaning")
 
     if "df" not in st.session_state:
-        st.warning("Upload a dataset first!")
+        st.warning("Upload dataset first")
     else:
-        df = st.session_state["df"]
+        df = st.session_state.df
         st.write("Shape:", df.shape)
-
-        st.subheader("Missing Values")
         st.dataframe(df.isnull().sum())
 
-        if st.button("Run Basic Cleaning"):
-            cleaned = basic_cleaning(df)
-            st.session_state["df"] = cleaned
-            st.success("Cleaning complete.")
-            st.dataframe(cleaned)
+        if st.button("Clean Data"):
+            df = clean(df)
+            st.session_state.df = df
+            st.success("Cleaned!")
+            st.dataframe(df)
 
-
-# Keep your EDA, model training, prediction sections same as before  
-# (You can paste them here exactly)
 
 # ---------------------------------
-# FOOTER
+# Footer
 # ---------------------------------
 st.markdown("---")
-st.markdown("**Rajagiri College of Social Sciences – Capstone Project**")
+st.markdown("**Rajagiri College — Capstone Project**")
