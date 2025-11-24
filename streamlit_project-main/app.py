@@ -140,7 +140,7 @@ place_logo(RAJAGIRI, "top-right")
 # ---------------------------------
 # Title
 # ---------------------------------
-st.title("IPL Cricket Analysis — Capstone Project (Streamlit + ML)")
+st.title("IPL Cricket Analyser")
 
 st.markdown("""
 This project demonstrates:
@@ -149,7 +149,7 @@ This project demonstrates:
 - Cleaning  
 - EDA  
 - ML Model (Winner Prediction)  
-- Final Prediction Form  
+- Final Prediction  
 """)
 
 
@@ -183,14 +183,14 @@ def clean(df):
 # ---------------------------------
 page = st.sidebar.selectbox(
     "Navigation",
-    ["Upload / Sample", "Data Cleaning", "EDA", "Model Training", "Predict"]
+    ["Upload Dataset", "Data Cleaning", "EDA", "Model Training", "Predict"]
 )
 
 
 # ---------------------------------
 # Pages
 # ---------------------------------
-if page == "Upload / Sample":
+if page == "Upload Dataset":
     st.header("Upload dataset or use sample")
     f = st.file_uploader("Upload IPL CSV", type=["csv"])
 
@@ -226,3 +226,4 @@ elif page == "Data Cleaning":
 # ---------------------------------
 st.markdown("---")
 st.markdown("**Rajagiri College – Capstone Project**")
+
