@@ -19,7 +19,7 @@ st.set_page_config(page_title="IPL Analysis Capstone", layout="wide")
 
 
 # ---------------------------------
-# Image Paths (ALL inside assets folder)
+# Image Paths (ALL inside assets)
 # ---------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(BASE_DIR, "assets")
@@ -33,8 +33,13 @@ RAJAGIRI = os.path.join(ASSETS, "Rajagiri.png")
 # Background + CSS
 # ---------------------------------
 def set_bg(image):
+    if not os.path.isfile(image):
+        st.error(f"Image not found: {image}")
+        return
+
     with open(image, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
+
     ext = image.split(".")[-1]
     mime = f"image/{ext}"
 
@@ -51,7 +56,7 @@ def set_bg(image):
             background-attachment: fixed;
         }}
 
-        /* REMOVE WHITE GLASS COMPLETELY */
+        /* REMOVE MAIN WHITE GLASS */
         .block-container {{
             background-color: transparent !important;
             padding: 2rem;
@@ -77,19 +82,19 @@ def set_bg(image):
             box-shadow: none !important;
         }}
 
-        /* FIXED LOGOS */
+        /* LOGO POSITIONS */
         .top-left {{
             position: fixed;
-            top: 15px;
-            left: 15px;
+            top: 40px;      /* adjusted */
+            left: 20px;
             width: 120px;
             z-index: 9999;
         }}
 
         .top-right {{
             position: fixed;
-            top: 15px;
-            right: 15px;
+            top: 40px;      /* adjusted */
+            right: 40px;    /* balanced gap */
             width: 120px;
             z-index: 9999;
         }}
@@ -128,24 +133,23 @@ def place_logo(path, css_class):
             unsafe_allow_html=True
         )
 
-
 place_logo(GRANT, "top-left")
 place_logo(RAJAGIRI, "top-right")
 
 
 # ---------------------------------
-# Title + Description
+# Title
 # ---------------------------------
 st.title("IPL Cricket Analysis — Capstone Project (Streamlit + ML)")
 
 st.markdown("""
-This app demonstrates an end-to-end IPL match analysis pipeline:
+This project demonstrates:
 
-- Upload dataset / Use sample  
-- Data cleaning & preprocessing  
-- EDA & Visualization  
-- ML Model — Predict match winner  
-- Final prediction form  
+- Dataset Upload  
+- Cleaning  
+- EDA  
+- ML Model (Winner Prediction)  
+- Final Prediction Form  
 """)
 
 
@@ -188,20 +192,18 @@ page = st.sidebar.selectbox(
 # ---------------------------------
 if page == "Upload / Sample":
     st.header("Upload dataset or use sample")
-    file = st.file_uploader("Upload IPL CSV", type=["csv"])
+    f = st.file_uploader("Upload IPL CSV", type=["csv"])
 
-    if file:
-        st.session_state.df = pd.read_csv(file)
-        st.success("File uploaded!")
+    if f:
+        st.session_state.df = pd.read_csv(f)
+        st.success("Dataset uploaded!")
 
-    if st.button("Load Sample"):
+    if st.button("Load sample"):
         st.session_state.df = load_sample()
         st.success("Sample loaded.")
 
     if "df" in st.session_state:
-        st.subheader("Preview")
         st.dataframe(st.session_state.df)
-
 
 elif page == "Data Cleaning":
     st.header("Data Cleaning")
@@ -210,10 +212,9 @@ elif page == "Data Cleaning":
         st.warning("Upload dataset first")
     else:
         df = st.session_state.df
-        st.write("Shape:", df.shape)
         st.dataframe(df.isnull().sum())
 
-        if st.button("Clean Data"):
+        if st.button("Clean"):
             df = clean(df)
             st.session_state.df = df
             st.success("Cleaned!")
@@ -224,4 +225,4 @@ elif page == "Data Cleaning":
 # Footer
 # ---------------------------------
 st.markdown("---")
-st.markdown("**Rajagiri College — Capstone Project**")
+st.markdown("**Rajagiri College – Capstone Project**")
