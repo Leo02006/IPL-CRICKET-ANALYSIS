@@ -86,7 +86,7 @@ def set_bg(image):
         .top-right, .bottom-right {{
             position: fixed;
             right: 40px;
-            width: 100px;
+            width: 180px;
             z-index: 2147483647;
         }}
 
@@ -240,6 +240,7 @@ elif page == "Data Cleaning":
 # ---------------------------------
 st.markdown("---")
 st.markdown("**Rajagiri College – Capstone Project**")
+
 
 
 
