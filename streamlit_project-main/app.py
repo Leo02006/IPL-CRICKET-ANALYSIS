@@ -17,7 +17,6 @@ from sklearn.compose import ColumnTransformer
 # ---------------------------------
 st.set_page_config(page_title="IPL Analysis Capstone", layout="wide")
 
-
 # ---------------------------------
 # Image Paths (ALL inside assets)
 # ---------------------------------
@@ -25,7 +24,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(BASE_DIR, "assets")
 
 BACKGROUND = os.path.join(ASSETS, "cricket2.jpeg")
-
 
 # ---------------------------------
 # Background + CSS
@@ -80,30 +78,6 @@ def set_bg(image):
             box-shadow: none !important;
         }}
 
-        /* LOGO POSITIONS (NO BLACK OVERLAY) */
-        .top-right, .bottom-right {{
-            position: fixed;
-            right: 40px;
-            width: 160px;
-            z-index: 2147483647;
-        }}
-
-        /* Rajagiri at top-right */
-        .top-right {{
-            top: 100px;
-        }}
-
-        /* Grant logo just below Rajagiri */
-        .bottom-right {{
-            top: 150px;   /* adjust if you want more / less gap */
-        }}
-
-        .top-right img, .bottom-right img {{
-            width: 100%;
-            height: auto;
-            display: block;
-        }}
-
         /* TITLE ANIMATION */
         @keyframes glow {{
             0% {{ color:#2196F3; text-shadow:0 0 10px #2196F3; }}
@@ -122,32 +96,7 @@ def set_bg(image):
         unsafe_allow_html=True,
     )
 
-
 set_bg(BACKGROUND)
-
-
-# ---------------------------------
-# Place Logos
-# ---------------------------------
-def place_logo(path, css_class):
-    if os.path.isfile(path):
-        with open(path, "rb") as f:
-            encoded = base64.b64encode(f.read()).decode()
-
-        st.markdown(
-            f'''
-            <div class="{css_class}">
-                <img src="data:image/png;base64,{encoded}">
-            </div>
-            ''',
-            unsafe_allow_html=True
-        )
-
-# Rajagiri top-right
-place_logo(RAJAGIRI, "top-right")
-# Grant Thornton below Rajagiri
-place_logo(GRANT, "bottom-right")
-
 
 # ---------------------------------
 # Title
@@ -163,7 +112,6 @@ This project demonstrates:
 - ML Model (Winner Prediction)  
 - Final Prediction  
 """)
-
 
 # ---------------------------------
 # Utility Functions
@@ -181,14 +129,12 @@ def load_sample():
         "winner": ["MI", "MI", "KKR", "RCB"]
     })
 
-
 def clean(df):
     df = df.copy()
     df.dropna(how="all", axis=1, inplace=True)
     df.drop_duplicates(inplace=True)
     df.columns = [c.strip() for c in df.columns]
     return df
-
 
 # ---------------------------------
 # Sidebar Navigation
@@ -197,7 +143,6 @@ page = st.sidebar.selectbox(
     "Navigation",
     ["Upload Dataset", "Data Cleaning", "EDA", "Model Training", "Predict"]
 )
-
 
 # ---------------------------------
 # Pages
@@ -232,16 +177,8 @@ elif page == "Data Cleaning":
             st.success("Cleaned!")
             st.dataframe(df)
 
-
 # ---------------------------------
 # Footer
 # ---------------------------------
 st.markdown("---")
 st.markdown("**Rajagiri College – Capstone Project**")
-
-
-
-
-
-
-
