@@ -25,7 +25,11 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(BASE_DIR, "assets")
 
 BACKGROUND = os.path.join(ASSETS, "cricket2.jpeg")
-GRANT = os.path.join(ASSETS, "Grant.png")
+
+# Grant Thornton logo — user uploaded file
+GRANT = "/mnt/data/6de89bdc-5c43-4dd0-973a-8dfa5d79a1bc.png"
+
+# Rajagiri logo from assets folder
 RAJAGIRI = os.path.join(ASSETS, "Rajagiri.png")
 
 
@@ -82,21 +86,36 @@ def set_bg(image):
             box-shadow: none !important;
         }}
 
-        /* LOGO POSITIONS */
-        .top-left {{
+        /* LOGOS — visible & not behind sidebar */
+        .top-left, .top-right {{
             position: fixed;
-            top: 40px;      /* adjusted */
-            left: 20px;
-            width: 120px;
-            z-index: 9999;
+            top: 24px;
+            padding: 8px;
+            background: rgba(0,0,0,0.55);
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+            z-index: 2147483647;
+            width: 140px;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }}
 
+        /* Move Grant logo to the RIGHT of sidebar */
+        .top-left {{
+            left: 260px;
+        }}
+
+        /* Rajagiri stays top-right */
         .top-right {{
-            position: fixed;
-            top: 40px;      /* adjusted */
-            right: 40px;    /* balanced gap */
-            width: 120px;
-            z-index: 9999;
+            right: 40px;
+        }}
+
+        .top-left img, .top-right img {{
+            width: 100%;
+            height: auto;
+            display: block;
         }}
 
         /* TITLE ANIMATION */
@@ -128,11 +147,18 @@ def place_logo(path, css_class):
     if os.path.isfile(path):
         with open(path, "rb") as f:
             encoded = base64.b64encode(f.read()).decode()
+
         st.markdown(
-            f'<img src="data:image/png;base64,{encoded}" class="{css_class}">',
+            f'''
+            <div class="{css_class}">
+                <img src="data:image/png;base64,{encoded}">
+            </div>
+            ''',
             unsafe_allow_html=True
         )
 
+
+# Show logos
 place_logo(GRANT, "top-left")
 place_logo(RAJAGIRI, "top-right")
 
@@ -226,4 +252,3 @@ elif page == "Data Cleaning":
 # ---------------------------------
 st.markdown("---")
 st.markdown("**Rajagiri College – Capstone Project**")
-
