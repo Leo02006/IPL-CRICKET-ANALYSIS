@@ -25,8 +25,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(BASE_DIR, "assets")
 
 BACKGROUND = os.path.join(ASSETS, "cricket2.jpeg")
-GRANT = os.path.join(ASSETS, "Grant.png")
-RAJAGIRI = os.path.join(ASSETS, "Rajagiri.png")
 
 
 # ---------------------------------
@@ -240,6 +238,7 @@ elif page == "Data Cleaning":
 # ---------------------------------
 st.markdown("---")
 st.markdown("**Rajagiri College – Capstone Project**")
+
 
 
 
