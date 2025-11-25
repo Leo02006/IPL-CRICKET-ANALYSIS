@@ -92,12 +92,12 @@ def set_bg(image):
 
         /* Rajagiri at top-right */
         .top-right {{
-            top: 40px;
+            top: 70px;
         }}
 
         /* Grant logo just below Rajagiri */
         .bottom-right {{
-            top: 140px;   /* adjust if you want more / less gap */
+            top: 200px;   /* adjust if you want more / less gap */
         }}
 
         .top-right img, .bottom-right img {{
@@ -240,4 +240,5 @@ elif page == "Data Cleaning":
 # ---------------------------------
 st.markdown("---")
 st.markdown("**Rajagiri College – Capstone Project**")
+
 
