@@ -27,7 +27,7 @@ ASSETS = os.path.join(BASE_DIR, "assets")
 BACKGROUND = os.path.join(ASSETS, "cricket2.jpeg")
 
 # Grant Thornton logo — user uploaded file
-GRANT = "/mnt/data/6de89bdc-5c43-4dd0-973a-8dfa5d79a1bc.png"
+GRANT = os.path.join(ASSETS, "Grant.png")
 
 # Rajagiri logo from assets folder
 RAJAGIRI = os.path.join(ASSETS, "Rajagiri.png")
@@ -252,3 +252,4 @@ elif page == "Data Cleaning":
 # ---------------------------------
 st.markdown("---")
 st.markdown("**Rajagiri College – Capstone Project**")
+
