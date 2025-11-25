@@ -25,11 +25,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(BASE_DIR, "assets")
 
 BACKGROUND = os.path.join(ASSETS, "cricket2.jpeg")
-
-# Grant Thornton logo — user uploaded file
 GRANT = os.path.join(ASSETS, "Grant.png")
-
-# Rajagiri logo from assets folder
 RAJAGIRI = os.path.join(ASSETS, "Rajagiri.png")
 
 
@@ -86,33 +82,25 @@ def set_bg(image):
             box-shadow: none !important;
         }}
 
-        /* LOGOS — visible & not behind sidebar */
-        .top-left, .top-right {{
+        /* LOGO POSITIONS (NO BLACK OVERLAY) */
+        .top-right, .bottom-right {{
             position: fixed;
-            top: 24px;
-            padding: 8px;
-            background: rgba(0,0,0,0.55);
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-            z-index: 2147483647;
-            width: 140px;
-            height: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }}
-
-        /* Move Grant logo to the RIGHT of sidebar */
-        .top-left {{
-            left: 260px;
-        }}
-
-        /* Rajagiri stays top-right */
-        .top-right {{
             right: 40px;
+            width: 130px;
+            z-index: 2147483647;
         }}
 
-        .top-left img, .top-right img {{
+        /* Rajagiri at top-right */
+        .top-right {{
+            top: 24px;
+        }}
+
+        /* Grant logo just below Rajagiri */
+        .bottom-right {{
+            top: 140px;   /* adjust if you want more / less gap */
+        }}
+
+        .top-right img, .bottom-right img {{
             width: 100%;
             height: auto;
             display: block;
@@ -157,10 +145,10 @@ def place_logo(path, css_class):
             unsafe_allow_html=True
         )
 
-
-# Show logos
-place_logo(GRANT, "top-left")
+# Rajagiri top-right
 place_logo(RAJAGIRI, "top-right")
+# Grant Thornton below Rajagiri
+place_logo(GRANT, "bottom-right")
 
 
 # ---------------------------------
@@ -252,4 +240,3 @@ elif page == "Data Cleaning":
 # ---------------------------------
 st.markdown("---")
 st.markdown("**Rajagiri College – Capstone Project**")
-
